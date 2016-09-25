@@ -24,31 +24,12 @@ import static org.testng.Assert.*;
 import static org.mockito.Mockito.*;
 import com.vanillasource.config.Configuration;
 import com.vanillasource.config.Key;
+import com.vanillasource.config.key.StringKey;
 import java.io.File;
 
 @Test
 public class PropertiesConfigurationTests {
-   private static final Key<String> KEY = new Key<String>() {
-      @Override
-      public String getName() {
-         return "Test.Setting";
-      }
-
-      @Override
-      public String getDefaultValue() {
-         return "Default";
-      }
-
-      @Override
-      public String serialize(String value) {
-         return value;
-      }
-
-      @Override
-      public String deserialize(String serializedValue) {
-         return serializedValue;
-      }
-   };
+   private static final Key<String> KEY = new StringKey("Test.Setting", "Default");
    private File configFile = new File("target/config.xml");
    private Configuration config;
 

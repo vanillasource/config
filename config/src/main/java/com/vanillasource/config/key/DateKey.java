@@ -32,7 +32,9 @@ public class DateKey implements Key<Date> {
       this.name = name;
       this.format = format;
       try {
-         this.defaultValue = new SimpleDateFormat(format).parse(defaultValue);
+         if (defaultValue != null) {
+            this.defaultValue = new SimpleDateFormat(format).parse(defaultValue);
+         }
       } catch (ParseException e) {
          throw new IllegalArgumentException("can not parse default value '"+defaultValue+"' with format: "+format, e);
       }
