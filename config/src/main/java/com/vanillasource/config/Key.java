@@ -20,23 +20,33 @@ package com.vanillasource.config;
 
 public interface Key<T> {
    /**
-    * Name of the setting. This must be unique.
+    * Store the given value into the given storage.
     */
-   String getName();
+   void storeTo(KeyValueStorage storage, T value);
 
    /**
-    * The default value which should be used if no value is yet present.
+    * Load the value for this key from the given storage.
     */
-   T getDefaultValue();
+   T loadFrom(KeyValueStorage storage);
 
    /**
-    * Serialize given value to string form.
+    * Remove this key from the storage.
     */
-   String serialize(T value);
+   void removeFrom(KeyValueStorage storage);
 
    /**
-    * Deserialize value from string form.
+    * Whether this key is present in the storage.
     */
-   T deserialize(String serializedValue);
+   boolean presentIn(KeyValueStorage storage);
+
+   interface KeyValueStorage {
+      boolean contains(String key);
+
+      String get(String key);
+
+      void put(String key, String value);
+
+      void remove(String key);
+   }
 }
 

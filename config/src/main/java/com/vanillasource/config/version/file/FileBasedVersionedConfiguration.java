@@ -20,9 +20,7 @@ package com.vanillasource.config.version.file;
 
 import com.vanillasource.config.Configuration;
 import com.vanillasource.config.Key;
-import com.vanillasource.config.key.StringKey;
-import com.vanillasource.config.key.IntegerKey;
-import com.vanillasource.config.key.DateKey;
+import static com.vanillasource.config.key.Keys.*;
 import com.vanillasource.config.version.VersionedConfiguration;
 import java.util.List;
 import java.util.ArrayList;
@@ -39,9 +37,9 @@ import java.util.Date;
  * by copying the tagged files to archives.
  */
 public class FileBasedVersionedConfiguration implements VersionedConfiguration {
-   private static final Key<String> TAG_KEY = new StringKey("Versioning.Tag", "<initial>");
-   private static final Key<Integer> TAG_INDEX_KEY = new IntegerKey("Versioning.Index", 0);
-   private static final Key<Date> TAG_TIMESTAMP_KEY = new DateKey("Versioning.Timestamp", "yyyy-MM-dd HH:mm:ss", null);
+   private static final Key<String> TAG_KEY = stringKey("Versioning.Tag", "<initial>");
+   private static final Key<Integer> TAG_INDEX_KEY = integerKey("Versioning.Index", 0);
+   private static final Key<Date> TAG_TIMESTAMP_KEY = dateKey("Versioning.Timestamp", "yyyy-MM-dd HH:mm:ss", (Date)null);
    private File configFile;
    private Function<File, Configuration> configurationFactory;
    private Configuration currentConfig;

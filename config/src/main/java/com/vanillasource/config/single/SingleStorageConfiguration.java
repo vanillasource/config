@@ -16,38 +16,37 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package com.vanillasource.config.key;
+package com.vanillasource.config.single;
 
+import com.vanillasource.config.Configuration;
+import com.vanillasource.config.Key.KeyValueStorage;
 import com.vanillasource.config.Key;
 
-public class BooleanKey implements Key<Boolean> {
-   private String name;
-   private boolean defaultValue;
+public class SingleStorageConfiguration implements Configuration {
+   private final KeyValueStorage storage;
 
-   public BooleanKey(String name, boolean defaultValue) {
-      this.name = name;
-      this.defaultValue = defaultValue;
+   public SingleStorageConfiguration(KeyValueStorage storage) {
+      this.storage = storage;
    }
 
    @Override
-   public String getName() {
-      return name;
+   public <T> T get(Key<T> key) {
+      return key.loadFrom(storage);
    }
 
    @Override
-   public Boolean getDefaultValue() {
-      return defaultValue;
+   public <T> void set(Key<T> key, T value) {
+      key.storeTo(storage, value);
    }
 
    @Override
-   public String serialize(Boolean value) {
-      return value.toString();
+   public void unset(Key<?> key) {
+      key.removeFrom(storage);
    }
 
    @Override
-   public Boolean deserialize(String serializedValue) {
-      return Boolean.valueOf(serializedValue);
+   public boolean isSet(Key<?> key) {
+      return key.presentIn(storage);
    }
 }
-
 

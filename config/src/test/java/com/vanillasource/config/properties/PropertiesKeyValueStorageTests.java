@@ -22,44 +22,36 @@ import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import static org.testng.Assert.*;
 import static org.mockito.Mockito.*;
-import com.vanillasource.config.Configuration;
-import com.vanillasource.config.Key;
-import com.vanillasource.config.key.StringKey;
 import java.io.File;
 
 @Test
-public class PropertiesConfigurationTests {
-   private static final Key<String> KEY = new StringKey("Test.Setting", "Default");
+public class PropertiesKeyValueStorageTests {
    private File configFile = new File("target/config.xml");
-   private Configuration config;
+   private PropertiesKeyValueStorage storage;
 
    public void testSettingIsNotPresentWhenEmpty() {
-      assertFalse(config.isSet(KEY));
-   }
-
-   public void testDefaultValueIsReturnedIfSettingNotPresent() {
-      assertEquals(config.get(KEY), "Default");
+      assertFalse(storage.contains("key"));
    }
 
    public void testSettingIsReturnedAfterSetting() {
-      config.set(KEY, "Value");
+      storage.put("key", "value");
 
-      assertEquals(config.get(KEY), "Value");
+      assertEquals(storage.get("key"), "value");
    }
 
    public void testSettingsArePersistent() {
-      config.set(KEY, "Value");
-      config = new PropertiesConfiguration(configFile);
+      storage.put("key", "value");
+      storage = new PropertiesKeyValueStorage(configFile);
 
-      assertEquals(config.get(KEY), "Value");
+      assertEquals(storage.get("key"), "value");
    }
 
-   public void testDefaultIsReturnedAfterUnset() {
-      config.set(KEY, "Value");
+   public void testKeyNotPresentAfterRemove() {
+      storage.put("key", "value");
 
-      config.unset(KEY);
+      storage.remove("key");
 
-      assertEquals(config.get(KEY), "Default");
+      assertFalse(storage.contains("key"));
    }
 
    @BeforeMethod
@@ -67,6 +59,6 @@ public class PropertiesConfigurationTests {
       if (configFile.isFile()) {
          configFile.delete();
       }
-      config = new PropertiesConfiguration(configFile);
+      storage = new PropertiesKeyValueStorage(configFile);
    }
 }

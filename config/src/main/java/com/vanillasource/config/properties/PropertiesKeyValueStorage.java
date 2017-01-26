@@ -18,8 +18,7 @@
 
 package com.vanillasource.config.properties;
 
-import com.vanillasource.config.Configuration;
-import com.vanillasource.config.Key;
+import com.vanillasource.config.Key.KeyValueStorage;
 import java.util.Properties;
 import java.io.File;
 import java.io.InputStream;
@@ -29,50 +28,41 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 
 /**
- * A <code>Properties</code> based implementation of a configuration.
+ * A <code>Properties</code> based implementation of a key-value storage.
  */
-public class PropertiesConfiguration implements Configuration {
-   private Properties properties;
-   private File configFile;
+public class PropertiesKeyValueStorage implements KeyValueStorage {
+   private final Properties properties;
+   private final File configFile;
 
-   public PropertiesConfiguration(File configFile) {
+   public PropertiesKeyValueStorage(File configFile) {
       this.configFile = configFile;
+      this.properties = new Properties();
+      loadProperties();
    }
 
    @Override
-   public <T> T get(Key<T> key) {
-      if (isSet(key)) {
-         return key.deserialize(properties.getProperty(key.getName()));
-      }
-      return key.getDefaultValue();
+   public String get(String key) {
+      return properties.getProperty(key);
    }
 
    @Override
-   public <T> void set(Key<T> key, T value) {
-      getProperties().setProperty(key.getName(), key.serialize(value));
+   public void put(String key, String value) {
+      properties.setProperty(key, value);
       saveProperties();
    }
 
    @Override
-   public void unset(Key<?> key) {
-      getProperties().remove(key.getName());
+   public void remove(String key) {
+      properties.remove(key);
       saveProperties();
    }
 
    @Override
-   public boolean isSet(Key<?> key) {
-      return getProperties().containsKey(key.getName());
-   }
-
-   private Properties getProperties() {
-      if (properties == null) {
-         loadProperties();
-      }
-      return properties;
+   public boolean contains(String key) {
+      return properties.containsKey(key);
    }
 
    private void loadProperties() {
-      properties = new Properties();
       if (configFile.isFile()) {
          try {
             try (InputStream in = new FileInputStream(configFile)) {
