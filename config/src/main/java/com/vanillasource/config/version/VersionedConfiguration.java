@@ -42,6 +42,8 @@ public interface VersionedConfiguration extends Configuration {
 
       Date getTimestamp();
 
+      Configuration getConfiguration();
+
       void restore();
    }
 }

@@ -36,12 +36,12 @@ import java.util.Date;
  * Works with single file-based configuration implementations
  * by copying the tagged files to archives.
  */
-public class FileBasedVersionedConfiguration implements VersionedConfiguration {
+public final class FileBasedVersionedConfiguration implements VersionedConfiguration {
    private static final Key<String> TAG_KEY = stringKey("Versioning.Tag", "<initial>");
    private static final Key<Integer> TAG_INDEX_KEY = integerKey("Versioning.Index", 0);
    private static final Key<Date> TAG_TIMESTAMP_KEY = dateKey("Versioning.Timestamp", "yyyy-MM-dd HH:mm:ss", (Date)null);
-   private File configFile;
-   private Function<File, Configuration> configurationFactory;
+   private final File configFile;
+   private final Function<File, Configuration> configurationFactory;
    private Configuration currentConfig;
 
    /**
@@ -120,6 +120,11 @@ public class FileBasedVersionedConfiguration implements VersionedConfiguration {
                @Override
                public int compareTo(Version other) {
                   return getTimestamp().compareTo(other.getTimestamp());
+               }
+
+               @Override
+               public Configuration getConfiguration() {
+                  return config;
                }
 
                @Override
