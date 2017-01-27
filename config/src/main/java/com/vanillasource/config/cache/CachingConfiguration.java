@@ -27,9 +27,9 @@ import java.util.HashMap;
  * Caches all configuration values indefinitely, until the same (equal)
  * key is used in an update method.
  */
-public class CachingConfiguration implements Configuration {
-   private Configuration delegate;
-   private Map<Key<Object>, Object> cache = new HashMap<>();
+public final class CachingConfiguration implements Configuration {
+   private final Configuration delegate;
+   private final Map<Key<Object>, Object> cache = new HashMap<>();
 
    public CachingConfiguration(Configuration delegate) {
       this.delegate = delegate;

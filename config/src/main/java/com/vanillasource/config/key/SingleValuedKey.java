@@ -22,7 +22,7 @@ import com.vanillasource.config.Key.KeyValueStorage;
 import com.vanillasource.config.Key;
 import java.util.function.Function;
 
-public class SingleValuedKey<T> implements Key<T> {
+public final class SingleValuedKey<T> implements Key<T> {
    private final String key;
    private final Function<T, String> serializer;
    private final Function<String, T> deserializer;

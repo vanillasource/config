@@ -22,7 +22,7 @@ import com.vanillasource.config.Configuration;
 import com.vanillasource.config.Key.KeyValueStorage;
 import com.vanillasource.config.Key;
 
-public class SingleStorageConfiguration implements Configuration {
+public final class SingleStorageConfiguration implements Configuration {
    private final KeyValueStorage storage;
 
    public SingleStorageConfiguration(KeyValueStorage storage) {

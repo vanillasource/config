@@ -29,7 +29,10 @@ import java.text.ParseException;
 /**
  * Factory methods for creating default-valued, typed configuration keys.
  */
-public class Keys {
+public final class Keys {
+   private Keys() {
+   }
+
    public static <T> Key<T> defaultValued(Key<T> delegate, T defaultValue) {
       return new DefaultValuedKey<>(delegate, defaultValue);
    }

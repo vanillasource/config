@@ -24,7 +24,7 @@ import com.vanillasource.config.Key;
  * Handles returning a default value in case there is no value stored
  * for this key, or delegate returns 'null'.
  */
-public class DefaultValuedKey<T> implements Key<T> {
+public final class DefaultValuedKey<T> implements Key<T> {
    private final T defaultValue;
    private final Key<T> delegate;
 

@@ -30,7 +30,7 @@ import java.io.UncheckedIOException;
 /**
  * A <code>Properties</code> based implementation of a key-value storage.
  */
-public class PropertiesKeyValueStorage implements KeyValueStorage {
+public final class PropertiesKeyValueStorage implements KeyValueStorage {
    private final Properties properties;
    private final File configFile;
 
