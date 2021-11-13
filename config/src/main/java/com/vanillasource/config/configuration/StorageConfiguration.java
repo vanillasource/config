@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2016 VanillaSource
+ * Copyright (C) 2021 VanillaSource
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,37 +16,33 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package com.vanillasource.config.single;
+package com.vanillasource.config.configuration;
 
 import com.vanillasource.config.Configuration;
-import com.vanillasource.config.Key.KeyValueStorage;
-import com.vanillasource.config.Key;
+import com.vanillasource.config.KeyValueStorage;
+import com.vanillasource.config.GenericParameter;
+import java.util.Optional;
 
-public final class SingleStorageConfiguration implements Configuration {
+public final class StorageConfiguration implements Configuration {
    private final KeyValueStorage storage;
 
-   public SingleStorageConfiguration(KeyValueStorage storage) {
+   public StorageConfiguration(KeyValueStorage storage) {
       this.storage = storage;
    }
 
    @Override
-   public <T> T get(Key<T> key) {
-      return key.loadFrom(storage);
+   public <L> L get(GenericParameter<?, L> parameter) {
+      return parameter.loadFrom(storage);
    }
 
    @Override
-   public <T> void set(Key<T> key, T value) {
-      key.storeTo(storage, value);
+   public <S> void set(GenericParameter<S, ?> parameter, S value) {
+      parameter.storeTo(storage, value);
    }
 
    @Override
-   public void unset(Key<?> key) {
-      key.removeFrom(storage);
-   }
-
-   @Override
-   public boolean isSet(Key<?> key) {
-      return key.presentIn(storage);
+   public void unset(GenericParameter<?, ?> parameter) {
+      parameter.removeFrom(storage);
    }
 }
 

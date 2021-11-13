@@ -24,15 +24,15 @@ import static org.testng.Assert.*;
 import static org.mockito.Mockito.*;
 import java.io.File;
 import com.vanillasource.config.properties.PropertiesKeyValueStorage;
-import com.vanillasource.config.single.SingleStorageConfiguration;
 import com.vanillasource.config.version.VersionedConfiguration;
-import com.vanillasource.config.Key;
-import com.vanillasource.config.key.Keys;
+import com.vanillasource.config.SafeParameter;
+import static com.vanillasource.config.parameter.Parameters.*;
 import java.util.List;
+import com.vanillasource.config.configuration.StorageConfiguration;
 
 @Test
 public class FileBasedVersionedConfigurationTests {
-   private static final Key<String> KEY = Keys.stringKey("Test.Setting", "Default");
+   private static final SafeParameter<String> KEY = stringParameter("Test.Setting").withDefault("Default");
    private FileBasedVersionedConfiguration config;
 
    public void testGetReturnsDefault() {
@@ -104,7 +104,7 @@ public class FileBasedVersionedConfigurationTests {
          configFile.delete();
       }
       config = new FileBasedVersionedConfiguration(configFile, file ->
-            new SingleStorageConfiguration(new PropertiesKeyValueStorage(file)));
+            new StorageConfiguration(new PropertiesKeyValueStorage(file)));
    }
 }
 

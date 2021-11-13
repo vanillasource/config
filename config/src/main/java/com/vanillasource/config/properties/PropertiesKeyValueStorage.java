@@ -18,7 +18,7 @@
 
 package com.vanillasource.config.properties;
 
-import com.vanillasource.config.Key.KeyValueStorage;
+import com.vanillasource.config.KeyValueStorage;
 import java.util.Properties;
 import java.io.File;
 import java.io.InputStream;
@@ -26,6 +26,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.util.Optional;
 
 /**
  * A <code>Properties</code> based implementation of a key-value storage.
@@ -41,12 +42,12 @@ public final class PropertiesKeyValueStorage implements KeyValueStorage {
    }
 
    @Override
-   public String get(String key) {
-      return properties.getProperty(key);
+   public Optional<String> load(String key) {
+      return Optional.ofNullable(properties.getProperty(key));
    }
 
    @Override
-   public void put(String key, String value) {
+   public void store(String key, String value) {
       properties.setProperty(key, value);
       saveProperties();
    }
@@ -55,11 +56,6 @@ public final class PropertiesKeyValueStorage implements KeyValueStorage {
    public void remove(String key) {
       properties.remove(key);
       saveProperties();
-   }
-
-   @Override
-   public boolean contains(String key) {
-      return properties.containsKey(key);
    }
 
    private void loadProperties() {

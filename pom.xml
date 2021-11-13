@@ -4,7 +4,7 @@
    <groupId>com.vanillasource.config</groupId>
    <artifactId>config-parent</artifactId>
    <packaging>pom</packaging>
-   <version>2.0.1-SNAPSHOT</version>
+   <version>3.0.0-SNAPSHOT</version>
    <name>Config Parent</name>
    <description>The generic configuration library for applications</description>
    <url>https://github.com/vanillasource/config</url>

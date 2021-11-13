@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2016 VanillaSource
+ * Copyright (C) 2021 VanillaSource
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,20 +20,10 @@ package com.vanillasource.config;
 
 import java.util.Optional;
 
-public interface Configuration {
-   /**
-    * Get a typed parameter from this configuration.
-    */
-   <L> L get(GenericParameter<?, L> parameter);
+public interface KeyValueStorage {
+   Optional<String> load(String key);
 
-   /**
-    * Set a value to the configuration.
-    */
-   <S> void set(GenericParameter<S, ?> key, S value);
+   void store(String key, String value);
 
-   /**
-    * Reset the value of a given configuration.
-    */
-   void unset(GenericParameter<?, ?> key);
+   void remove(String key);
 }
-

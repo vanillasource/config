@@ -30,28 +30,28 @@ public class PropertiesKeyValueStorageTests {
    private PropertiesKeyValueStorage storage;
 
    public void testSettingIsNotPresentWhenEmpty() {
-      assertFalse(storage.contains("key"));
+      assertFalse(storage.load("key").isPresent());
    }
 
    public void testSettingIsReturnedAfterSetting() {
-      storage.put("key", "value");
+      storage.store("key", "value");
 
-      assertEquals(storage.get("key"), "value");
+      assertEquals(storage.load("key").get(), "value");
    }
 
    public void testSettingsArePersistent() {
-      storage.put("key", "value");
+      storage.store("key", "value");
       storage = new PropertiesKeyValueStorage(configFile);
 
-      assertEquals(storage.get("key"), "value");
+      assertEquals(storage.load("key").get(), "value");
    }
 
    public void testKeyNotPresentAfterRemove() {
-      storage.put("key", "value");
+      storage.store("key", "value");
 
       storage.remove("key");
 
-      assertFalse(storage.contains("key"));
+      assertFalse(storage.load("key").isPresent());
    }
 
    @BeforeMethod

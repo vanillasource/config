@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2016 VanillaSource
+ * Copyright (C) 2021 VanillaSource
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,35 +18,27 @@
 
 package com.vanillasource.config;
 
-public interface Key<T> {
+import java.util.Optional;
+import java.util.function.Function;
+
+/**
+ * A generic parameter that takes some value to store and gives a
+ * potentially different value when loaded.
+ */
+public interface GenericParameter<S, L> {
    /**
     * Store the given value into the given storage.
     */
-   void storeTo(KeyValueStorage storage, T value);
+   void storeTo(KeyValueStorage storage, S value);
 
    /**
     * Load the value for this key from the given storage.
     */
-   T loadFrom(KeyValueStorage storage);
+   L loadFrom(KeyValueStorage storage);
 
    /**
     * Remove this key from the storage.
     */
    void removeFrom(KeyValueStorage storage);
-
-   /**
-    * Whether this key is present in the storage.
-    */
-   boolean presentIn(KeyValueStorage storage);
-
-   interface KeyValueStorage {
-      boolean contains(String key);
-
-      String get(String key);
-
-      void put(String key, String value);
-
-      void remove(String key);
-   }
 }
 

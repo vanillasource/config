@@ -19,8 +19,10 @@
 package com.vanillasource.config.version.file;
 
 import com.vanillasource.config.Configuration;
-import com.vanillasource.config.Key;
-import static com.vanillasource.config.key.Keys.*;
+import com.vanillasource.config.GenericParameter;
+import com.vanillasource.config.Parameter;
+import com.vanillasource.config.SafeParameter;
+import static com.vanillasource.config.parameter.Parameters.*;
 import com.vanillasource.config.version.VersionedConfiguration;
 import java.util.List;
 import java.util.ArrayList;
@@ -31,15 +33,16 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.util.function.Function;
 import java.util.Date;
+import java.util.Optional;
 
 /**
  * Works with single file-based configuration implementations
  * by copying the tagged files to archives.
  */
 public final class FileBasedVersionedConfiguration implements VersionedConfiguration {
-   private static final Key<String> TAG_KEY = stringKey("Versioning.Tag", "<initial>");
-   private static final Key<Integer> TAG_INDEX_KEY = integerKey("Versioning.Index", 0);
-   private static final Key<Date> TAG_TIMESTAMP_KEY = dateKey("Versioning.Timestamp", "yyyy-MM-dd HH:mm:ss", (Date)null);
+   private static final Parameter<String> TAG_KEY = stringParameter("Versioning.Tag");
+   private static final SafeParameter<Integer> TAG_INDEX_KEY = integerParameter("Versioning.Index").withDefault(0);
+   private static final Parameter<Date> TAG_TIMESTAMP_KEY = dateParameter("Versioning.Timestamp", "yyyy-MM-dd HH:mm:ss");
    private final File configFile;
    private final Function<File, Configuration> configurationFactory;
    private Configuration currentConfig;
@@ -61,23 +64,18 @@ public final class FileBasedVersionedConfiguration implements VersionedConfigura
    }
 
    @Override
-   public <T> T get(Key<T> key) {
-      return currentConfig.get(key);
+   public <L> L get(GenericParameter<?, L> parameter) {
+      return currentConfig.get(parameter);
    }
 
    @Override
-   public <T> void set(Key<T> key, T value) {
-      currentConfig.set(key, value);
+   public <S> void set(GenericParameter<S, ?> parameter, S value) {
+      currentConfig.set(parameter, value);
    }
 
    @Override
-   public void unset(Key<?> key) {
-      currentConfig.unset(key);
-   }
-
-   @Override
-   public boolean isSet(Key<?> key) {
-      return currentConfig.isSet(key);
+   public void unset(GenericParameter<?, ?> parameter) {
+      currentConfig.unset(parameter);
    }
 
    /**
@@ -95,6 +93,7 @@ public final class FileBasedVersionedConfiguration implements VersionedConfigura
          if (versionedFile.isFile()) {
             versionedFile.delete();
          }
+         // TODO: do atomic?
          Files.copy(configFile.toPath(), versionedFile.toPath());
       } catch (IOException e) {
          throw new UncheckedIOException("can not create tag "+tag, e);
@@ -115,7 +114,7 @@ public final class FileBasedVersionedConfiguration implements VersionedConfigura
       for (int i=1; i<currentIndex+1; i++) {
          Configuration config = configurationFactory.apply(getVersionedFile(i));
          int index = i;
-         if (config.isSet(TAG_KEY)) {
+         if (config.get(TAG_KEY).isPresent()) {
             versions.add(new Version() {
                @Override
                public int compareTo(Version other) {
@@ -129,17 +128,18 @@ public final class FileBasedVersionedConfiguration implements VersionedConfigura
 
                @Override
                public String getTag() {
-                  return config.get(TAG_KEY);
+                  return config.get(TAG_KEY).get();
                }
 
                @Override
                public Date getTimestamp() {
-                  return config.get(TAG_TIMESTAMP_KEY);
+                  return config.get(TAG_TIMESTAMP_KEY).orElse(new Date(0L));
                }
 
                @Override
                public void restore() {
                   synchronized (FileBasedVersionedConfiguration.this) {
+                     // TODO: this is wrong, do new index
                      try {
                         configFile.delete();
                         Files.copy(getVersionedFile(index).toPath(), configFile.toPath());
