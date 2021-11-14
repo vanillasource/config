@@ -23,27 +23,23 @@ import java.util.List;
 import java.util.Date;
 
 /**
- * A configuration which can be versioned and restored from
- * previous versions.
+ * A configuration which can be stored and restored.
  */
 public interface VersionedConfiguration extends Configuration {
    /**
-    * Tag the current configuration with the given tag.
+    * Store a new version of this configuration.
     */
-   void tag(String tag);
+   void store();
 
    /**
-    * List the available tags.
+    * List the available versions of stored configuration.
     */
    List<Version> getVersions();
 
-   interface Version extends Comparable<Version> {
-      String getTag();
-
-      Date getTimestamp();
-
-      Configuration getConfiguration();
-
+   interface Version extends Comparable<Version>, Configuration {
+      /**
+       * Restore this version of the configuration as the current version.
+       */
       void restore();
    }
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2016 VanillaSource
+ * Copyright (C) 2021 VanillaSource
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,14 +16,19 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package com.vanillasource.config;
+package com.vanillasource.config.parameter;
 
+import com.vanillasource.config.GenericParameter;
 import java.util.Optional;
 
-public interface Configuration {
+/**
+ * A single parameter that saves and loads the same type of value in a configuration,
+ * where the loaded value is always present.
+ */
+public interface SafeParameter<T> extends GenericParameter<T, T> {
    /**
-    * Get a typed parameter from this configuration.
+    * Add a default value that is always returned.
     */
-   <T> T get(Parameter<T> parameter);
+   SafeParameter<T> withDefault(T defaultValue);
 }
 

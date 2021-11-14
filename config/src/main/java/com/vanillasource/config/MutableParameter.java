@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2016 VanillaSource
+ * Copyright (C) 2021 VanillaSource
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,11 +19,19 @@
 package com.vanillasource.config;
 
 import java.util.Optional;
+import java.util.function.Function;
 
-public interface Configuration {
+/**
+ * A mutable parameter that can set or clear its value.
+ */
+public interface MutableParameter<S, T> extends Parameter<T> {
    /**
-    * Get a typed parameter from this configuration.
+    * Store the given value into the given storage.
     */
-   <T> T get(Parameter<T> parameter);
-}
+   void storeTo(MutableKeyValueStorage storage, S value);
 
+   /**
+    * Remove this key from the storage.
+    */
+   void removeFrom(MutableKeyValueStorage storage);
+}

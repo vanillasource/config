@@ -22,8 +22,4 @@ import java.util.Optional;
 
 public interface KeyValueStorage {
    Optional<String> load(String key);
-
-   void store(String key, String value);
-
-   void remove(String key);
 }

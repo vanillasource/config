@@ -19,26 +19,9 @@
 package com.vanillasource.config;
 
 import java.util.Optional;
-import java.util.function.Function;
 
-/**
- * A generic parameter that takes some value to store and gives a
- * potentially different value when loaded.
- */
-public interface GenericParameter<S, L> {
-   /**
-    * Store the given value into the given storage.
-    */
-   void storeTo(KeyValueStorage storage, S value);
+public interface MutableKeyValueStorage extends KeyValueStorage {
+   void store(String key, String value);
 
-   /**
-    * Load the value for this key from the given storage.
-    */
-   L loadFrom(KeyValueStorage storage);
-
-   /**
-    * Remove this key from the storage.
-    */
-   void removeFrom(KeyValueStorage storage);
+   void remove(String key);
 }
-

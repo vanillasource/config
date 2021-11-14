@@ -18,21 +18,32 @@
 
 package com.vanillasource.config.configuration;
 
-import com.vanillasource.config.Configuration;
-import com.vanillasource.config.KeyValueStorage;
+import com.vanillasource.config.MutableConfiguration;
+import com.vanillasource.config.MutableKeyValueStorage;
 import com.vanillasource.config.Parameter;
+import com.vanillasource.config.MutableParameter;
 import java.util.Optional;
 
-public final class StorageConfiguration implements Configuration {
-   private final KeyValueStorage storage;
+public final class MutableStorageConfiguration implements MutableConfiguration {
+   private final MutableKeyValueStorage storage;
 
-   public StorageConfiguration(KeyValueStorage storage) {
+   public MutableStorageConfiguration(MutableKeyValueStorage storage) {
       this.storage = storage;
    }
 
    @Override
    public <T> T get(Parameter<T> parameter) {
       return parameter.loadFrom(storage);
+   }
+
+   @Override
+   public <S> void set(MutableParameter<S, ?> parameter, S value) {
+      parameter.storeTo(storage, value);
+   }
+
+   @Override
+   public void unset(MutableParameter<?, ?> parameter) {
+      parameter.removeFrom(storage);
    }
 }
 

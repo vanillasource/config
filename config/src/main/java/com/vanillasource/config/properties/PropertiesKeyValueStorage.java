@@ -18,7 +18,7 @@
 
 package com.vanillasource.config.properties;
 
-import com.vanillasource.config.KeyValueStorage;
+import com.vanillasource.config.MutableKeyValueStorage;
 import java.util.Properties;
 import java.io.File;
 import java.io.InputStream;
@@ -31,13 +31,14 @@ import java.util.Optional;
 /**
  * A <code>Properties</code> based implementation of a key-value storage.
  */
-public final class PropertiesKeyValueStorage implements KeyValueStorage {
+public final class PropertiesKeyValueStorage implements MutableKeyValueStorage {
    private final Properties properties;
    private final File configFile;
 
    public PropertiesKeyValueStorage(File configFile) {
       this.configFile = configFile;
       this.properties = new Properties();
+      // TODO: this needs to be lazy
       loadProperties();
    }
 

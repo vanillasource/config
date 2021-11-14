@@ -20,14 +20,15 @@ package com.vanillasource.config;
 
 import java.util.Optional;
 
-/**
- * A single parameter that saves and loads the same type of value in a configuration,
- * where the loaded value is always present.
- */
-public interface SafeParameter<T> extends GenericParameter<T, T> {
+public interface MutableConfiguration extends Configuration {
    /**
-    * Add a default value that is always returned.
+    * Set a value to the configuration.
     */
-   SafeParameter<T> withDefault(T defaultValue);
+   <S> void set(GenericParameter<S, ?> key, S value);
+
+   /**
+    * Reset the value of a given configuration.
+    */
+   void unset(GenericParameter<?, ?> key);
 }
 

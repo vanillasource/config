@@ -22,59 +22,12 @@ import java.util.Optional;
 import java.util.function.Function;
 
 /**
- * A single parameter that saves and loads the same type of value in a configuration,
- * where the loaded value is not always present.
+ * A parameter of a certain type.
  */
-public interface Parameter<T> extends GenericParameter<T, Optional<T>> {
+public interface Parameter<T> {
    /**
-    * Map this parameter to a different type.
+    * Load the parameter value from given storage.
     */
-   default <R> Parameter<R> map(Function<R, T> toParent, Function<T, R> fromParent) {
-      Parameter<T> parent = this;
-      return new Parameter<R>() {
-         @Override
-         public void storeTo(KeyValueStorage storage, R value) {
-            parent.storeTo(storage, toParent.apply(value));
-         }
-
-         @Override
-         public Optional<R> loadFrom(KeyValueStorage storage) {
-            return parent.loadFrom(storage).map(fromParent);
-         }
-
-         @Override
-         public void removeFrom(KeyValueStorage storage) {
-            parent.removeFrom(storage);
-         }
-      };
-   }
-
-   /**
-    * Add a default value that is always returned.
-    */
-   default SafeParameter<T> withDefault(T defaultValue) {
-      Parameter<T> parent = this;
-      return new SafeParameter<T>() {
-         @Override
-         public void storeTo(KeyValueStorage storage, T value) {
-            parent.storeTo(storage, value);
-         }
-
-         @Override
-         public T loadFrom(KeyValueStorage storage) {
-            return parent.loadFrom(storage).orElse(defaultValue);
-         }
-
-         @Override
-         public void removeFrom(KeyValueStorage storage) {
-            parent.removeFrom(storage);
-         }
-
-         @Override
-         public SafeParameter<T> withDefault(T defaultValue) {
-            return parent.withDefault(defaultValue);
-         }
-      };
-   }
+   T loadFrom(KeyValueStorage storage);
 }
 

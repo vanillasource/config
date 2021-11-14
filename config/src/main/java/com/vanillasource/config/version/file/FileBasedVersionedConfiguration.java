@@ -40,9 +40,7 @@ import java.util.Optional;
  * by copying the tagged files to archives.
  */
 public final class FileBasedVersionedConfiguration implements VersionedConfiguration {
-   private static final Parameter<String> TAG_KEY = stringParameter("Versioning.Tag");
-   private static final SafeParameter<Integer> TAG_INDEX_KEY = integerParameter("Versioning.Index").withDefault(0);
-   private static final Parameter<Date> TAG_TIMESTAMP_KEY = dateParameter("Versioning.Timestamp", "yyyy-MM-dd HH:mm:ss");
+   private static final SafeParameter<Integer> MAX_VERSION = integerParameter("Version.Max").withDefault(0);
    private final File configFile;
    private final Function<File, Configuration> configurationFactory;
    private Configuration currentConfig;
@@ -82,14 +80,11 @@ public final class FileBasedVersionedConfiguration implements VersionedConfigura
     * Tag the current configuration with the given tag.
     */
    @Override
-   public synchronized void tag(String tag) {
-      currentConfig.set(TAG_KEY, tag);
-      int index = currentConfig.get(TAG_INDEX_KEY);
-      index++;
-      currentConfig.set(TAG_INDEX_KEY, index);
-      currentConfig.set(TAG_TIMESTAMP_KEY, new Date());
+   public synchronized void store() {
+      int nextIndex = currentConfig.get(MAX_VERSION) + 1;
+      currentConfig.set(MAX_VERSION, nextIndex);
       try {
-         File versionedFile = getVersionedFile(index);
+         File versionedFile = getVersionedFile(nextIndex);
          if (versionedFile.isFile()) {
             versionedFile.delete();
          }
