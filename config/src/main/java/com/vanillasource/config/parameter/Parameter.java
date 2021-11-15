@@ -19,12 +19,15 @@
 package com.vanillasource.config.parameter;
 
 import com.vanillasource.config.GenericParameter;
+import com.vanillasource.config.KeyValueStorage;
 import java.util.Optional;
 import java.util.function.Function;
 
 /**
+ * A parameter that loads and stores the same type, but the may not always
+ * return a value.
  */
-public interface UnsafeParameter<T> extends GenericParameter<T, Optional<T>> {
+public interface Parameter<T> extends GenericParameter<T, Optional<T>> {
    /**
     * Map this parameter to a different type.
     */

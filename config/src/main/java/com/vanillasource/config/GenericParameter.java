@@ -19,9 +19,25 @@
 package com.vanillasource.config;
 
 import java.util.Optional;
+import java.util.function.Function;
 
-public interface MutableKeyValueStorage extends KeyValueStorage {
-   void store(String key, String value);
+/**
+ * A generic parameter that stores a certain type an may load a different type.
+ */
+public interface GenericParameter<S, T> {
+   /**
+    * Load the parameter value from given storage.
+    */
+   T loadFrom(KeyValueStorage storage);
 
-   void remove(String key);
+   /**
+    * Store the given value into the given storage.
+    */
+   void storeTo(KeyValueStorage storage, S value);
+
+   /**
+    * Remove this key from the storage.
+    */
+   void removeFrom(KeyValueStorage storage);
 }
+

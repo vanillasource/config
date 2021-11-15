@@ -24,6 +24,6 @@ public interface Configuration {
    /**
     * Get a typed parameter from this configuration.
     */
-   <T> T get(Parameter<T> parameter);
+   <T> T get(GenericParameter<?, T> parameter);
 }
 

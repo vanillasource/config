@@ -18,7 +18,6 @@
 
 package com.vanillasource.config.parameter;
 
-import com.vanillasource.config.Parameter;
 import com.vanillasource.config.KeyValueStorage;
 import java.util.function.Function;
 import java.math.BigDecimal;

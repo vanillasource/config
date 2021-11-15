@@ -22,8 +22,8 @@ import com.vanillasource.config.GenericParameter;
 import java.util.Optional;
 
 /**
- * A single parameter that saves and loads the same type of value in a configuration,
- * where the loaded value is always present.
+ * A parameter that loads and stores the same type and always
+ * returns a value.
  */
 public interface SafeParameter<T> extends GenericParameter<T, T> {
    /**

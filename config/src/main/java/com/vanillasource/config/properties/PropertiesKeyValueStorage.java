@@ -18,7 +18,7 @@
 
 package com.vanillasource.config.properties;
 
-import com.vanillasource.config.MutableKeyValueStorage;
+import com.vanillasource.config.KeyValueStorage;
 import java.util.Properties;
 import java.io.File;
 import java.io.InputStream;
@@ -31,7 +31,7 @@ import java.util.Optional;
 /**
  * A <code>Properties</code> based implementation of a key-value storage.
  */
-public final class PropertiesKeyValueStorage implements MutableKeyValueStorage {
+public final class PropertiesKeyValueStorage implements KeyValueStorage {
    private final Properties properties;
    private final File configFile;
 
